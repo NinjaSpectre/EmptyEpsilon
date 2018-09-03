@@ -13,6 +13,7 @@ class GuiImage;
 class GuiArrow;
 class GuiToggleButton;
 class GuiProgressbar;
+class GuiCustomShipFunctions;
 
 class EngineeringScreen : public GuiOverlay
 {
@@ -28,7 +29,7 @@ private:
     GuiSlider* power_slider;
     GuiLabel* coolant_label;
     GuiSlider* coolant_slider;
-    
+
     class SystemRow
     {
     public:
@@ -51,12 +52,14 @@ private:
     float previous_energy_measurement;
     float previous_energy_level;
     float average_energy_delta;
-    
+
     void addSystemEffect(string key, string value);
     void selectSystem(ESystem system);
+protected:
+    GuiCustomShipFunctions* custom_functions;
 public:
     EngineeringScreen(GuiContainer* owner, ECrewPosition crew_position=engineering);
-    
+
     virtual void onDraw(sf::RenderTarget& window) override;
     virtual void onHotkey(const HotkeyResult& key) override;
 };
