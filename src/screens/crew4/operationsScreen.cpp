@@ -10,8 +10,12 @@
 
 #include "spaceObjects/playerSpaceship.h"
 
+#include "gui/gui2_autolayout.h"
+#include "gui/gui2_togglebutton.h"
+#include "gui/gui2_keyvaluedisplay.h"
+
 OperationScreen::OperationScreen(GuiContainer* owner)
-: GuiOverlay(owner, "", colorConfig.background)
+: GuiOverlay(owner, "OPERATIONS_SCREEN", colorConfig.background)
 {
     ScienceScreen* science = new ScienceScreen(this, operationsOfficer);
     science->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(0, 0, 0, 50);
@@ -45,6 +49,10 @@ OperationScreen::OperationScreen(GuiContainer* owner)
             {
             case TargetSelection:
                 science->targets.setToClosestTo(position, 1000.0, TargetsContainer::Selectable);
+                if (science->targets.getWaypointIndex() >= 0)
+                    delete_waypoint_button->enable();
+                else
+                    delete_waypoint_button->disable();
                 break;
             case WaypointPlacement:
                 if (my_spaceship)
@@ -54,6 +62,7 @@ OperationScreen::OperationScreen(GuiContainer* owner)
             case MoveWaypoint:
                 mode = TargetSelection;
                 science->targets.setWaypointIndex(drag_waypoint_index);
+                delete_waypoint_button->enable();
                 break;
             }
         }
@@ -70,12 +79,55 @@ OperationScreen::OperationScreen(GuiContainer* owner)
         if (my_spaceship && science->targets.getWaypointIndex() >= 0)
         {
             my_spaceship->commandRemoveWaypoint(science->targets.getWaypointIndex());
+            delete_waypoint_button->disable();
         }
     });
-    delete_waypoint_button->setPosition(-270, -120, ABottomRight)->setSize(200, 50);
-    
+    delete_waypoint_button->setPosition(-270, -120, ABottomRight)->setSize(200, 50)->disable();
+
     mode = TargetSelection;
-    
+
+    // Reputation display.
+    info_reputation = new GuiKeyValueDisplay(science->radar_view, "INFO_REPUTATION", 0.45, "Reputation", "");
+    info_reputation->setTextSize(20)->setPosition(20, 100, ATopLeft)->setSize(200, 40);
+
+    // Alert level layout.
+    GuiAutoLayout* layout = new GuiAutoLayout(science->radar_view, "ALERT_LEVEL_LAYOUT", GuiAutoLayout::LayoutVerticalBottomToTop);
+    layout->setPosition(-270, -170, ABottomRight)->setSize(200, GuiElement::GuiSizeMax);
+
+    // Alert level buttons.
+    alert_level_button = new GuiToggleButton(layout, "", "Alert level", [this](bool value)
+    {
+        for(GuiButton* button : alert_level_buttons)
+            button->setVisible(value);
+    });
+    alert_level_button->setValue(false);
+    alert_level_button->setSize(GuiElement::GuiSizeMax, 50);
+
+    for(int level=AL_Normal; level < AL_MAX; level++)
+    {
+        GuiButton* alert_button = new GuiButton(layout, "", alertLevelToString(EAlertLevel(level)), [this, level]()
+        {
+            if (my_spaceship)
+                my_spaceship->commandSetAlertLevel(EAlertLevel(level));
+            for(GuiButton* button : alert_level_buttons)
+                button->setVisible(false);
+            alert_level_button->setValue(false);
+        });
+        alert_button->setVisible(false);
+        alert_button->setSize(GuiElement::GuiSizeMax, 50);
+        alert_level_buttons.push_back(alert_button);
+    }
+
+    // Probes can not be used without a Relay screen
+    science->probe_view_button->hide();
+
     new ShipsLog(this);
     (new GuiCommsOverlay(this))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+}
+
+void OperationScreen::onDraw(sf::RenderTarget& window)
+{
+    if (my_spaceship)
+        info_reputation->setValue(string(my_spaceship->getReputationPoints(), 0));
+    GuiOverlay::onDraw(window);
 }
