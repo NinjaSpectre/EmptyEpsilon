@@ -6,6 +6,7 @@
 class GuiOverlay;
 class GuiKeyValueDisplay;
 class GuiButton;
+class GuiToggleButton;
 
 class OperationScreen : public GuiOverlay
 {
@@ -23,9 +24,13 @@ private:
     GuiKeyValueDisplay* info_reputation;
     GuiButton* place_waypoint_button;
     GuiButton* delete_waypoint_button;
+    GuiToggleButton* alert_level_button;
+    std::vector<GuiButton*> alert_level_buttons;
 
     sf::Vector2f mouse_down_position;
 public:
     OperationScreen(GuiContainer* owner);
+
+    virtual void onDraw(sf::RenderTarget& window);
 };
 #endif//OPERATIONS_SCREEN_H
