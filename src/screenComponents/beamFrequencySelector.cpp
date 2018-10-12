@@ -9,6 +9,8 @@ GuiBeamFrequencySelector::GuiBeamFrequencySelector(GuiContainer* owner, string i
         addEntry(frequencyToString(n), frequencyToString(n));
     if (my_spaceship)
         setSelectionIndex(my_spaceship->beam_frequency);
+    else
+        setSelectionIndex(0);
     if (!gameGlobalInfo->use_beam_shield_frequencies)
         hide();
 }
