@@ -10,6 +10,8 @@ GuiBeamTargetSelector::GuiBeamTargetSelector(GuiContainer* owner, string id)
         addEntry(getSystemName(ESystem(n)), string(n));
     if (my_spaceship)
         setSelectionIndex(my_spaceship->beam_system_target - SYS_None);
+    else
+        setSelectionIndex(0);
     if (!gameGlobalInfo->use_system_damage)
         hide();
 }
