@@ -18,6 +18,7 @@ WeaponTube::WeaponTube()
     delay = 0.0;
     tube_index = 0;
     size = MS_Medium;
+    has_fired = false;
 }
 
 void WeaponTube::setParent(SpaceShip* parent)
@@ -91,6 +92,7 @@ void WeaponTube::fire(float target_angle)
     if (parent->docking_state != DS_NotDocking) return;
     if (parent->current_warp > 0.0) return;
     if (state != WTS_Loaded) return;
+    has_fired = true;
 
     if (type_loaded == MW_HVLI)
     {
@@ -118,7 +120,6 @@ float WeaponTube::getSizeCategoryModifier()
             return 1.0;
     }
 }
-
 
 void WeaponTube::spawnProjectile(float target_angle)
 {
@@ -282,6 +283,13 @@ bool WeaponTube::isLoading()
 bool WeaponTube::isUnloading()
 {
     return state == WTS_Unloading;
+}
+
+bool WeaponTube::hasFired()
+{
+    bool flag = has_fired;
+    if (has_fired) has_fired = false;
+    return flag;
 }
 
 bool WeaponTube::isFiring()
