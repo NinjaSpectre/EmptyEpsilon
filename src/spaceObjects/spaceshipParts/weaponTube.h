@@ -57,6 +57,7 @@ public:
     bool isLoaded();
     bool isLoading();
     bool isUnloading();
+    bool hasFired();
     bool isFiring();
 
     float getLoadProgress();
@@ -89,6 +90,7 @@ private:
     EWeaponTubeState state;
     float delay;
     int fire_count;
+    bool has_fired;
 };
 
 #endif//WEAPON_TUBE_H
