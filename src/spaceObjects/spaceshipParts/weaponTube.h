@@ -91,6 +91,7 @@ private:
     float delay;
     int fire_count;
     bool has_fired;
+    bool has_fired_propagated;
 };
 
 #endif//WEAPON_TUBE_H
