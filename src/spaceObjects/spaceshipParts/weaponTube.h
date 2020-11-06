@@ -57,7 +57,7 @@ public:
     bool isLoaded();
     bool isLoading();
     bool isUnloading();
-    bool hasFired();
+    bool hasFired(bool reset = false);
     bool isFiring();
 
     float getLoadProgress();
