@@ -19,6 +19,7 @@ WeaponTube::WeaponTube()
     tube_index = 0;
     size = MS_Medium;
     has_fired = false;
+    has_fired_propagated = false;
 }
 
 void WeaponTube::setParent(SpaceShip* parent)
@@ -30,7 +31,7 @@ void WeaponTube::setParent(SpaceShip* parent)
     parent->registerMemberReplication(&type_allowed_mask);
     parent->registerMemberReplication(&direction);
     parent->registerMemberReplication(&size);
-
+    parent->registerMemberReplication(&has_fired);
     parent->registerMemberReplication(&type_loaded);
     parent->registerMemberReplication(&state);
     parent->registerMemberReplication(&delay, 0.5);
@@ -288,7 +289,14 @@ bool WeaponTube::isUnloading()
 bool WeaponTube::hasFired(bool reset)
 {
     bool flag = has_fired;
-    if (has_fired && reset) has_fired = false;
+    if (has_fired && reset) {
+        if (has_fired_propagated) {
+            has_fired_propagated = false;
+            has_fired = false;
+        } else { //wait for replication
+            has_fired_propagated = true;
+        }
+    }
     return flag;
 }
 
