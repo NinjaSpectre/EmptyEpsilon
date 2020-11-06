@@ -285,10 +285,10 @@ bool WeaponTube::isUnloading()
     return state == WTS_Unloading;
 }
 
-bool WeaponTube::hasFired()
+bool WeaponTube::hasFired(bool reset)
 {
     bool flag = has_fired;
-    if (has_fired) has_fired = false;
+    if (has_fired && reset) has_fired = false;
     return flag;
 }
 
