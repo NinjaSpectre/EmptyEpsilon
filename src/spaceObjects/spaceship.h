@@ -206,7 +206,7 @@ public:
     virtual bool canBeTargetedBy(P<SpaceObject> other) override { return true; }
 
     /*!
-     * didAnOffensiveAction is called whenever this ship does something offesive towards an other object
+     * didAnOffensiveAction is called whenever this ship does something offensive towards an other object
      * this can identify the ship as friend or foe.
      */
     void didAnOffensiveAction();
@@ -281,6 +281,7 @@ public:
 
     virtual bool canBeHackedBy(P<SpaceObject> other) override;
     virtual std::vector<std::pair<string, float> > getHackingTargets() override;
+    virtual std::vector<std::pair<string, string> > getLocaleHackingTargets() override;
     virtual void hackFinished(P<SpaceObject> source, string target) override;
 
     /*!
