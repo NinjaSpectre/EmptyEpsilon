@@ -141,25 +141,24 @@ void GuiHackingDialog::onMiniGameComplete(bool success)
     status_label->setText(success ? tr("Hacking SUCCESS!") : tr("Hacking FAILURE!"));
 }
 
-void GuiHackingDialog::getNewGame()
-{
+void GuiHackingDialog::getNewGame() {
     int difficulty = 2;
     EHackingGames games = HG_All;
     if (gameGlobalInfo) {
-        difficulty = gameGlobalInfo->hacking_difficulty;
-        games = gameGlobalInfo->hacking_games;
+      difficulty = gameGlobalInfo->hacking_difficulty;
+      games = gameGlobalInfo->hacking_games;
     }
 
     switch (games)
     {
     case HG_Lights:
-        game = std::make_shared<LightsOut>(minigame_box, this, difficulty);
-        break;
+      game = std::make_shared<LightsOut>(minigame_box, this, difficulty);
+      break;
     case HG_Mine:
-        game = std::make_shared<MineSweeper>(minigame_box, this, difficulty);
-        break;
+      game = std::make_shared<MineSweeper>(minigame_box, this, difficulty);
+      break;
     default:
-        irandom(0,1) ? game = std::make_shared<LightsOut>(minigame_box, this, difficulty) : game = std::make_shared<MineSweeper>(minigame_box, this, difficulty);
+      irandom(0,1) ? game = std::make_shared<LightsOut>(minigame_box, this, difficulty) : game = std::make_shared<MineSweeper>(minigame_box, this, difficulty);
     }
     sf::Vector2f board_size = game->getBoardSize();
 
