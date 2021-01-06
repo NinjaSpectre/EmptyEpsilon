@@ -121,7 +121,7 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, addBroadcast);
     /// Set the scan state of this ship for every faction.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setScanState);
-    /// Set the scan state of this ship for a particular faction.
+    /// Set the scane state of this ship for a particular faction.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setScanStateByFaction);
 }
 
@@ -840,7 +840,7 @@ bool SpaceShip::canBeDockedBy(P<SpaceObject> obj)
     if (!ship || !ship->ship_template)
         return false;
     return (ship_template->can_be_docked_by_class.count(ship->ship_template->getClass()) +
-        ship_template->can_be_docked_by_class.count(ship->ship_template->getSubClass())) > 0;
+	   ship_template->can_be_docked_by_class.count(ship->ship_template->getSubClass())) > 0;
 }
 
 void SpaceShip::collide(Collisionable* other, float force)
@@ -1073,7 +1073,7 @@ float SpaceShip::getShieldDamageFactor(DamageInfo& info, int shield_index)
     }
     ESystem system = getShieldSystemForShieldIndex(shield_index);
 
-    //Shield damage reduction curve. Damage reduction gets slightly exponential effective with power.
+    //Shield damage reduction curve. Damage reduction gets slightly exponetial effective with power.
     // This also greatly reduces the ineffectiveness at low power situations.
     float shield_damage_exponent = 1.6;
     float shield_damage_divider = 7.0;
@@ -1191,7 +1191,7 @@ float SpaceShip::getSystemEffectiveness(ESystem system)
 {
     float power = systems[system].power_level;
 
-    // Subtract the hacking from the power, making double hacked systems run at 25% efficiency.
+    // Substract the hacking from the power, making double hacked systems run at 25% efficiency.
     power = std::max(0.0f, power - systems[system].hacked_level * 0.75f);
 
     // Degrade all systems except the reactor once energy level drops below 10.
