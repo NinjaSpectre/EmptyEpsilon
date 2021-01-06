@@ -206,7 +206,7 @@ public:
     virtual bool canBeTargetedBy(P<SpaceObject> other) override { return true; }
 
     /*!
-     * didAnOffensiveAction is called whenever this ship does something offensive towards an other object
+     * didAnOffensiveAction is called whenever this ship does something offesive towards an other object
      * this can identify the ship as friend or foe.
      */
     void didAnOffensiveAction();
